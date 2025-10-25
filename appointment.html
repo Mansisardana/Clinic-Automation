@@ -78,30 +78,32 @@
   </div>
 
   <script>
-    document.getElementById("appointmentForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const form = this;
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => data[key] = value);
+   document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const form = this;
+  const formData = new FormData(form);
+  const data = {};
+  formData.forEach((value, key) => data[key] = value);
 
-      fetch("https://prod-28.centralindia.logic.azure.com:443/workflows/6aef1db4cc1d4aec9562a1d607743ddd/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=vQQOR_TeGlEsVrIAhJi2A6t-75uHTlhgtIbsjAEQdiY", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-      .then(res => {
-        if (res.ok) {
-          document.getElementById("message").innerText = "✅ Appointment submitted successfully!";
-          form.reset();
-        } else {
-          document.getElementById("message").innerText = "❌ Error sending appointment.";
-        }
-      })
-      .catch(() => {
-        document.getElementById("message").innerText = "❌ Network error. Try again later.";
-      });
-    });
+  fetch("https://prod-28.centralindia.logic.azure.com:443/workflows/6aef1db4cc1d4aec9562a1d607743ddd/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=vQQOR_TeGlEsVrIAhJi2A6t-75uHTlhgtIbsjAEQdiY", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(res => {
+    console.log("Form data sent:", data); // <-- small added line for debugging
+    if (res.ok) {
+      alert("✅ Appointment submitted! Email trigger checked."); // <-- small popup added
+      document.getElementById("message").innerText = "✅ Appointment submitted successfully!";
+      form.reset();
+    } else {
+      document.getElementById("message").innerText = "❌ Error sending appointment.";
+    }
+  })
+  .catch(() => {
+    document.getElementById("message").innerText = "❌ Network error. Try again later.";
+  });
+});
   </script>
 
 </body>
